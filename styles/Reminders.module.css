@@ -5,6 +5,14 @@
   flex-direction: column;
   align-items: center;
 }
+.background_expired {
+  background: #d2d2d2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .header {
   font-family: Open Sans;
   font-style: normal;
@@ -56,7 +64,29 @@
   cursor: pointer;
   padding-right: 3px;
 }
+@media (max-width: 700px) {
+  .x {
+    padding-right: 7px;
+  }
+}
 .expiry {
   color: #ca5f5f;
   padding-left: 5px;
+}
+.expired_card {
+  background: #f8f8f8;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.03);
+  border-radius: 23px;
+  margin: 25px;
+}
+.expired_text {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 49px;
+  padding: 20px;
+  width: full;
+  text-align: center;
+  color: #d55e5e;
 }

@@ -9,7 +9,14 @@ export default function Reminders() {
     { text: 'Clean room', time: 'in 30 minutes', id: 'dsd' },
     { text: 'Deal with the dog', time: 'in 1 hour', id: '333' },
   ];
-  return (
+  const expired = false;
+  return expired ? (
+    <div className={styles.background_expired}>
+      <div className={styles.expired_card}>
+        <div className={styles.expired_text}>This link has expired</div>
+      </div>
+    </div>
+  ) : (
     <div className={styles.background}>
       <div className={styles.wrapper}>
         <div className={styles.header}>Reminders</div>
