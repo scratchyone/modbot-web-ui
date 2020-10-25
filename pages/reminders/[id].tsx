@@ -96,9 +96,9 @@ function Reminder(props: {
   );
 }
 export default function Reminders(props: {
-  capInfo: Capability;
-  reminders: Array<Reminder>;
-  user: User;
+  capInfo: Capability | null;
+  reminders: Array<Reminder> | null;
+  user: User | null;
 }): React.ReactElement {
   const router = useRouter();
   const id = router.query['id'];
@@ -193,12 +193,21 @@ export async function getServerSideProps({
     id: string;
   };
 }): Promise<{
-  props: { capInfo: Capability; reminders: Array<Reminder>; user: User };
+  props: {
+    capInfo: Capability | null;
+    reminders: Array<Reminder> | null;
+    user: User | null;
+  };
 }> {
   const id = query['id'];
-  const capInfo = await getCapabilityInfo(id as string);
-  const reminders = await getReminders(id as string, capInfo.user);
-  const user = await getUser(id as string, capInfo.user);
+  let capInfo = null;
+  let reminders = null;
+  let user = null;
+  try {
+    capInfo = await getCapabilityInfo(id as string);
+    reminders = await getReminders(id as string, capInfo.user);
+    user = await getUser(id as string, capInfo.user);
+  } catch (e) {}
   // Pass data to the page via props
   return { props: { capInfo, reminders, user } };
 }
