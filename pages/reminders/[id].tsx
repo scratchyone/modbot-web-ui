@@ -3,7 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import { API_URL, getCapabilityInfo, getUser } from '../../components/main';
+import {
+  API_URL,
+  Capability,
+  getCapabilityInfo,
+  getUser,
+  User,
+} from '../../components/main';
 import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
 import useSWR, { mutate } from 'swr';
 import Head from 'next/head';
@@ -89,22 +95,29 @@ function Reminder(props: {
     <div></div>
   );
 }
-export default function Reminders(): React.ReactElement {
+export default function Reminders(props: {
+  capInfo: Capability;
+  reminders: Array<Reminder>;
+  user: User;
+}): React.ReactElement {
   const router = useRouter();
   const id = router.query['id'];
-  const { data: capInfo, error: capError } = useSWR(
+  const { data: capInfof, error: capError } = useSWR(
     id ? `capabilities/${id}` : null,
     async () => await getCapabilityInfo(id as string)
   );
-  const { data: reminders, error: rmError } = useSWR(
-    capInfo ? `reminders/${id}` : null,
+  const { data: remindersf, error: rmError } = useSWR(
+    capInfof ? `reminders/${id}` : null,
     async () => await getReminders(id as string, capInfo?.user || ''),
     { refreshInterval: 2000 }
   );
-  const { data: user } = useSWR(
-    capInfo ? `users/${id}` : null,
+  const { data: userf } = useSWR(
+    capInfof ? `users/${id}` : null,
     async () => await getUser(id as string, capInfo?.user || '')
   );
+  const capInfo = capInfof || props.capInfo;
+  const reminders = remindersf || props.reminders;
+  const user = userf || props.user;
   const expired = !!capError;
   return expired ? (
     <div className={styles.background_expired}>
@@ -121,10 +134,22 @@ export default function Reminders(): React.ReactElement {
     <div className={styles.background}>
       <Head>
         <title>{'@' + (user ? user.username : 'User') + "'s Reminders"}</title>
-        <meta property="og:site_name" content="ModBot" />
+        <meta content="ModBot" property="og:site_name" />
         <meta
-          property="og:title"
           content={'@' + (user ? user.username : 'User') + "'s Reminders"}
+          property="og:title"
+        />
+        <meta
+          content={
+            'View and manage @' +
+            (user ? user.username : 'User') +
+            "'s Reminders"
+          }
+          property="og:description"
+        />
+        <meta
+          content={typeof location !== 'undefined' ? location.href : ''}
+          property="og:url"
         />
       </Head>
       <div className={styles.wrapper}>
@@ -146,7 +171,7 @@ export default function Reminders(): React.ReactElement {
             </div>
           )}
           {reminders &&
-            reminders.map((reminder) => (
+            reminders.map((reminder: Reminder) => (
               <Reminder
                 reminder={reminder}
                 key={reminder.id}
@@ -160,4 +185,20 @@ export default function Reminders(): React.ReactElement {
   ) : (
     <div></div>
   );
+}
+export async function getServerSideProps({
+  query,
+}: {
+  query: {
+    id: string;
+  };
+}): Promise<{
+  props: { capInfo: Capability; reminders: Array<Reminder>; user: User };
+}> {
+  const id = query['id'];
+  const capInfo = await getCapabilityInfo(id as string);
+  const reminders = await getReminders(id as string, capInfo.user);
+  const user = await getUser(id as string, capInfo.user);
+  // Pass data to the page via props
+  return { props: { capInfo, reminders, user } };
 }
