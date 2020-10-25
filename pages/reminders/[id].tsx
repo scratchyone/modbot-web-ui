@@ -95,8 +95,6 @@ export default function Reminders(): React.ReactElement {
     `capabilities/${id}`,
     async () => await getCapabilityInfo(id as string)
   );
-  console.log(capError);
-  console.log(capInfo);
   const { data: reminders, error: rmError } = useSWR(
     capInfo ? `reminders/${id}` : null,
     async () => await getReminders(id as string, capInfo?.user || ''),
