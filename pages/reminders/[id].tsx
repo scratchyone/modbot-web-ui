@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
+import Linkify from 'react-linkify';
 import {
   API_URL,
   Capability,
@@ -86,7 +87,9 @@ function Reminder(props: {
         }}
       />
       <span>
-        <span className={styles.reminderText}>{props.reminder.text}</span>
+        <span className={styles.reminderText}>
+          <Linkify>{props.reminder.text}</Linkify>
+        </span>
         <span className={styles.reminderTime}>{formattedTime}</span>
       </span>
     </div>

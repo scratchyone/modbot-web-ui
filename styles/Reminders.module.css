@@ -92,3 +92,7 @@
   text-align: center;
   color: #d55e5e;
 }
+.reminderText > a {
+  color: #59aae4;
+  text-decoration: none;
+}
