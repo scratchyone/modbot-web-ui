@@ -110,6 +110,8 @@ export default function Reminders(): React.ReactElement {
     <div className={styles.background_expired}>
       <Head>
         <title>Expired Link</title>
+        <meta property="og:site_name" content="ModBot" />
+        <meta property="og:title" content="Expired Link" />
       </Head>
       <div className={styles.expired_card}>
         <div className={styles.expired_text}>This link has expired</div>
@@ -119,6 +121,11 @@ export default function Reminders(): React.ReactElement {
     <div className={styles.background}>
       <Head>
         <title>{'@' + (user ? user.username : 'User') + "'s Reminders"}</title>
+        <meta property="og:site_name" content="ModBot" />
+        <meta
+          property="og:title"
+          content={'@' + (user ? user.username : 'User') + "'s Reminders"}
+        />
       </Head>
       <div className={styles.wrapper}>
         <div className={styles.header}>Reminders</div>
