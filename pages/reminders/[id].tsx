@@ -99,32 +99,33 @@ export default function Reminders(props: {
   capInfo: Capability | null;
   reminders: Array<Reminder> | null;
   user: User | null;
+  invalid: boolean;
 }): React.ReactElement {
   const router = useRouter();
   const id = router.query['id'];
-  const { data: capInfof, error: capError } = useSWR(
+  const { data: capInfo, error: capError } = useSWR(
     id ? `capabilities/${id}` : null,
-    async () => await getCapabilityInfo(id as string)
+    async () => await getCapabilityInfo(id as string),
+    { initialData: props.capInfo }
   );
-  const { data: remindersf, error: rmError } = useSWR(
-    capInfof ? `reminders/${id}` : null,
+  const { data: reminders, error: rmError } = useSWR(
+    capInfo ? `reminders/${id}` : null,
     async () => await getReminders(id as string, capInfo?.user || ''),
-    { refreshInterval: 2000 }
+    { refreshInterval: 2000, initialData: props.reminders }
   );
-  const { data: userf } = useSWR(
-    capInfof ? `users/${id}` : null,
-    async () => await getUser(id as string, capInfo?.user || '')
+  const { data: user } = useSWR(
+    capInfo ? `users/${id}` : null,
+    async () => await getUser(id as string, capInfo?.user || ''),
+    { initialData: props.user }
   );
-  const capInfo = capInfof || props.capInfo;
-  const reminders = remindersf || props.reminders;
-  const user = userf || props.user;
-  const expired = !!capError;
+  const expired = capInfo ? !!capError : props.invalid;
   return expired ? (
     <div className={styles.background_expired}>
       <Head>
         <title>Expired Link</title>
         <meta property="og:site_name" content="ModBot" />
         <meta property="og:title" content="Expired Link" />
+        <meta content={'Link no longer exists'} property="og:description" />
       </Head>
       <div className={styles.expired_card}>
         <div className={styles.expired_text}>This link has expired</div>
@@ -197,17 +198,20 @@ export async function getServerSideProps({
     capInfo: Capability | null;
     reminders: Array<Reminder> | null;
     user: User | null;
+    invalid: boolean;
   };
 }> {
   const id = query['id'];
   let capInfo = null;
   let reminders = null;
   let user = null;
+  let invalid = true;
   try {
     capInfo = await getCapabilityInfo(id as string);
     reminders = await getReminders(id as string, capInfo.user);
     user = await getUser(id as string, capInfo.user);
+    invalid = false;
   } catch (e) {}
   // Pass data to the page via props
-  return { props: { capInfo, reminders, user } };
+  return { props: { capInfo, reminders, user, invalid } };
 }
