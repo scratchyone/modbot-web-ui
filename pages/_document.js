@@ -5,6 +5,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta
+            property="og:logo"
+            content="https://cdn.discordapp.com/avatars/738517864016773241/45ceee959e8bc1a79584aaf73d01ff68.png"
+          />
           <link
             rel="icon"
             type="image/png"
