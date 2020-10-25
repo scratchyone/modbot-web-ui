@@ -33,6 +33,7 @@
   line-height: 41px;
   color: #333333;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .reminderTime {
   font-family: Open Sans;
