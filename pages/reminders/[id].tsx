@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import { API_URL, getCapabilityInfo } from '../../components/main';
+import { API_URL, getCapabilityInfo, getUser } from '../../components/main';
 import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
 import useSWR, { mutate } from 'swr';
+import Head from 'next/head';
 interface Reminder {
   text: string;
   time: number;
@@ -20,7 +21,7 @@ async function getReminders(
   token: string,
   user: string
 ): Promise<Array<Reminder>> {
-  const res = await fetch(API_URL + '/' + user + '/reminders/', {
+  const res = await fetch(API_URL + '/users/' + user + '/reminders/', {
     headers: { authorization: `Bearer ${token}` },
   });
   if (res.status !== 200) throw new Error((await res.json()).error);
@@ -31,7 +32,7 @@ async function deleteReminder(
   user: string,
   id: string
 ): Promise<Array<Reminder>> {
-  const res = await fetch(API_URL + '/' + user + '/reminders/' + id, {
+  const res = await fetch(API_URL + '/users/' + user + '/reminders/' + id, {
     headers: { authorization: `Bearer ${token}` },
     method: 'DELETE',
   });
@@ -92,7 +93,7 @@ export default function Reminders(): React.ReactElement {
   const router = useRouter();
   const id = router.query['id'];
   const { data: capInfo, error: capError } = useSWR(
-    `capabilities/${id}`,
+    id ? `capabilities/${id}` : null,
     async () => await getCapabilityInfo(id as string)
   );
   const { data: reminders, error: rmError } = useSWR(
@@ -100,15 +101,25 @@ export default function Reminders(): React.ReactElement {
     async () => await getReminders(id as string, capInfo?.user || ''),
     { refreshInterval: 2000 }
   );
+  const { data: user } = useSWR(
+    capInfo ? `users/${id}` : null,
+    async () => await getUser(id as string, capInfo?.user || '')
+  );
   const expired = !!capError;
   return expired ? (
     <div className={styles.background_expired}>
+      <Head>
+        <title>Expired Link</title>
+      </Head>
       <div className={styles.expired_card}>
         <div className={styles.expired_text}>This link has expired</div>
       </div>
     </div>
   ) : capInfo ? (
     <div className={styles.background}>
+      <Head>
+        <title>{'@' + (user ? user.username : 'User') + "'s Reminders"}</title>
+      </Head>
       <div className={styles.wrapper}>
         <div className={styles.header}>Reminders</div>
         <div className={styles.reminders}>
