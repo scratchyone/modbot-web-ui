@@ -139,6 +139,10 @@ export default function Reminders(props: {
         <title>{'@' + (user ? user.username : 'User') + "'s Reminders"}</title>
         <meta content="ModBot" property="og:site_name" />
         <meta
+          content={'@' + (user ? user.username : 'User')}
+          property="profile:username"
+        />
+        <meta
           content={'@' + (user ? user.username : 'User') + "'s Reminders"}
           property="og:title"
         />
