@@ -172,14 +172,16 @@ export default function Reminders(props: {
             </div>
           )}
           {reminders &&
-            reminders.map((reminder: Reminder) => (
-              <Reminder
-                reminder={reminder}
-                key={reminder.id}
-                id={id as string}
-                user={capInfo.user}
-              />
-            ))}
+            reminders
+              .sort((r1, r2) => r1.time - r2.time)
+              .map((reminder: Reminder) => (
+                <Reminder
+                  reminder={reminder}
+                  key={reminder.id}
+                  id={id as string}
+                  user={capInfo.user}
+                />
+              ))}
         </div>
       </div>
     </div>
