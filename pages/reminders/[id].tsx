@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import Linkify from 'react-linkify';
 import parse from 'parse-duration';
+import TextareaAutosize from 'react-textarea-autosize';
 import {
   API_URL,
   Capability,
@@ -287,6 +288,7 @@ function ReminderModal(props: {
           text={text}
           setText={setText}
           placeholder="Do a task"
+          textarea={true}
         />{' '}
         <Field
           label="Time"
@@ -294,6 +296,7 @@ function ReminderModal(props: {
           setText={setTime}
           placeholder="in 20 minutes"
           validate={(s) => parse(s) !== null}
+          textarea={false}
         />
       </motion.div>
     </motion.div>
@@ -303,24 +306,40 @@ function Field(props: {
   label: string;
   text: string;
   placeholder: string;
+  textarea: boolean;
   validate?: (arg0: string) => boolean;
   setText: (s: string) => unknown;
 }): React.ReactElement {
   return (
     <div className={styles.fieldWrapper}>
       <div className={styles.fieldLabel}>{props.label}</div>
-      <input
-        type="text"
-        value={props.text}
-        onChange={(e) => props.setText(e.target.value)}
-        className={classnames(
-          styles.fieldInput,
-          props.text !== '' && props.validate && !props.validate(props.text)
-            ? [styles.fieldInvalid]
-            : []
-        )}
-        placeholder={props.placeholder}
-      />
+      {props.textarea ? (
+        <TextareaAutosize
+          value={props.text}
+          onChange={(e) => props.setText(e.target.value)}
+          maxRows={9}
+          className={classnames(
+            styles.fieldInput,
+            props.text !== '' && props.validate && !props.validate(props.text)
+              ? [styles.fieldInvalid]
+              : []
+          )}
+          placeholder={props.placeholder}
+        />
+      ) : (
+        <input
+          type="text"
+          value={props.text}
+          onChange={(e) => props.setText(e.target.value)}
+          className={classnames(
+            styles.fieldInput,
+            props.text !== '' && props.validate && !props.validate(props.text)
+              ? [styles.fieldInvalid]
+              : []
+          )}
+          placeholder={props.placeholder}
+        />
+      )}
     </div>
   );
 }

@@ -152,8 +152,8 @@
 }
 .modal {
   position: fixed;
-  width: 200vw;
-  height: 200vh;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -218,6 +218,19 @@
   border: 2px solid rgba(0, 0, 0, 0);
   padding-left: 8px;
   color: var(--text);
+  resize: none;
+  font-family: Open Sans;
+  transition: height 0.1s;
+}
+.fieldInput {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.fieldInput::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
 }
 .fieldInvalid,
 .fieldInvalid.fieldInput:focus {
