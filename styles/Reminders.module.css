@@ -1,12 +1,12 @@
 .background {
-  background: #f8f8f8;
+  background: var(--background);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .background_expired {
-  background: #d2d2d2;
+  background: var(--background-expired);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@
   font-weight: bold;
   font-size: 36px;
   line-height: 49px;
-  color: #333333;
+  color: var(--text);
   margin-bottom: 10px;
 }
 .wrapper {
@@ -31,7 +31,7 @@
   font-weight: bold;
   font-size: 30px;
   line-height: 41px;
-  color: #333333;
+  color: var(--text);
   overflow-wrap: anywhere;
   word-break: break-word;
 }
@@ -41,11 +41,11 @@
   font-weight: normal;
   font-size: 30px;
   line-height: 41px;
-  color: #727272;
+  color: var(--reminderTime);
   padding-left: 7px;
 }
 .reminder {
-  background: #ffffff;
+  background: var(--reminderBackground);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.02);
   border-radius: 10px;
   width: max(28vw, 500px);
@@ -62,7 +62,7 @@
 }
 .x {
   font-size: 30px;
-  color: #ca5f5f;
+  color: var(--expiry);
   cursor: pointer;
   padding-right: 3px;
   flex-shrink: 0;
@@ -73,11 +73,11 @@
   }
 }
 .expiry {
-  color: #ca5f5f;
+  color: var(--expiry);
   padding-left: 5px;
 }
 .expired_card {
-  background: #f8f8f8;
+  background: var(--background);
   box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.03);
   border-radius: 23px;
   margin: 25px;
@@ -91,9 +91,32 @@
   padding: 20px;
   width: full;
   text-align: center;
-  color: #d55e5e;
+  color: var(--expiry);
 }
 .reminderText > a {
-  color: #59aae4;
+  color: var(--linkColor);
   text-decoration: none;
+}
+.background,
+.background_expired {
+  --expiry: #ca5f5f;
+  --background: #f8f8f8;
+  --background-expired: #d2d2d2;
+  --text: #333333;
+  --reminderTime: #727272;
+  --linkColor: #59aae4;
+  --reminderBackground: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .background,
+  .background_expired {
+    --expiry: #ca5f5f;
+    --background: #29292b;
+    --background-expired: #1e1e20;
+    --text: #f3f3f3;
+    --reminderTime: #727272;
+    --linkColor: #3886bd;
+    --reminderBackground: #38383a;
+  }
 }
