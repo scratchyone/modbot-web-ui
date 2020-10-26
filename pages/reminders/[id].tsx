@@ -288,7 +288,6 @@ function ReminderModal(props: {
           text={text}
           setText={setText}
           placeholder="Do a task"
-          textarea={true}
         />{' '}
         <Field
           label="Time"
@@ -296,7 +295,6 @@ function ReminderModal(props: {
           setText={setTime}
           placeholder="in 20 minutes"
           validate={(s) => parse(s) !== null}
-          textarea={false}
         />
       </motion.div>
     </motion.div>
