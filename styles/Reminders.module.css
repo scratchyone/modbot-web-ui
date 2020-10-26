@@ -46,7 +46,7 @@
 }
 .reminder {
   background: var(--reminderBackground);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: 2px 2px 4px var(--reminderShadow);
   border-radius: 10px;
   width: max(28vw, 500px);
   padding: 5px;
@@ -106,6 +106,7 @@
   --reminderTime: #727272;
   --linkColor: #59aae4;
   --reminderBackground: #ffffff;
+  --reminderShadow: rgba(0, 0, 0, 0.02);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -118,5 +119,6 @@
     --reminderTime: #727272;
     --linkColor: #3886bd;
     --reminderBackground: #38383a;
+    --reminderShadow: rgba(0, 0, 0, 0.02);
   }
 }
