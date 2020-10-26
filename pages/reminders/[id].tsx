@@ -306,40 +306,24 @@ function Field(props: {
   label: string;
   text: string;
   placeholder: string;
-  textarea: boolean;
   validate?: (arg0: string) => boolean;
   setText: (s: string) => unknown;
 }): React.ReactElement {
   return (
     <div className={styles.fieldWrapper}>
       <div className={styles.fieldLabel}>{props.label}</div>
-      {props.textarea ? (
-        <TextareaAutosize
-          value={props.text}
-          onChange={(e) => props.setText(e.target.value)}
-          maxRows={9}
-          className={classnames(
-            styles.fieldInput,
-            props.text !== '' && props.validate && !props.validate(props.text)
-              ? [styles.fieldInvalid]
-              : []
-          )}
-          placeholder={props.placeholder}
-        />
-      ) : (
-        <input
-          type="text"
-          value={props.text}
-          onChange={(e) => props.setText(e.target.value)}
-          className={classnames(
-            styles.fieldInput,
-            props.text !== '' && props.validate && !props.validate(props.text)
-              ? [styles.fieldInvalid]
-              : []
-          )}
-          placeholder={props.placeholder}
-        />
-      )}
+      <TextareaAutosize
+        value={props.text}
+        onChange={(e) => props.setText(e.target.value)}
+        maxRows={9}
+        className={classnames(
+          styles.fieldInput,
+          props.text !== '' && props.validate && !props.validate(props.text)
+            ? [styles.fieldInvalid]
+            : []
+        )}
+        placeholder={props.placeholder}
+      />
     </div>
   );
 }
