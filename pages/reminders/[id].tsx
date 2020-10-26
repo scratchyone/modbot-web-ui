@@ -259,7 +259,7 @@ function ReminderModal(props: {
       onClick={(e) => {
         if (e.target === e.currentTarget) props.closeModal();
       }}
-      animate={{ background: 'rgba(0, 0, 0, 0.4)' }}
+      animate={{ background: 'rgba(0, 0, 0, 0.5)' }}
       initial={{ background: 'rgba(0, 0, 0, 0)' }}
       transition={{ duration: 0.2 }}
     >
@@ -267,7 +267,7 @@ function ReminderModal(props: {
         className={styles.createReminder}
         animate={{ y: '0%' }}
         initial={{ y: '-200%' }}
-        transition={{ duration: 0.2 }}
+        transition={{ type: 'spring', stiffness: 150, damping: 20 }}
       >
         <div className={styles.createHeaderWrapper}>
           <div className={styles.createHeader}>Create a new reminder</div>
