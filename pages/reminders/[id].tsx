@@ -1,9 +1,10 @@
 import styles from '../../styles/Reminders.module.css';
 import React, { useState, useEffect } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { FaPlus, FaTimes } from 'react-icons/fa';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import Linkify from 'react-linkify';
+import parse from 'parse-duration';
 import {
   API_URL,
   Capability,
@@ -14,6 +15,7 @@ import {
 import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
 import useSWR, { mutate } from 'swr';
 import Head from 'next/head';
+import { motion } from 'framer-motion';
 interface Reminder {
   text: string;
   time: number;
@@ -33,6 +35,11 @@ async function getReminders(
   if (res.status !== 200) throw new Error((await res.json()).error);
   return await res.json();
 }
+async function getFeatures(): Promise<Array<string>> {
+  const res = await fetch(API_URL + '/features');
+  if (res.status !== 200) throw new Error((await res.json()).error);
+  return await res.json();
+}
 async function deleteReminder(
   token: string,
   user: string,
@@ -41,6 +48,22 @@ async function deleteReminder(
   const res = await fetch(API_URL + '/users/' + user + '/reminders/' + id, {
     headers: { authorization: `Bearer ${token}` },
     method: 'DELETE',
+  });
+  if (res.status !== 200) throw new Error((await res.json()).error);
+  return await res.json();
+}
+async function addReminder(
+  token: string,
+  user: string,
+  reminder: { text: string; time: string }
+): Promise<Array<Reminder>> {
+  const res = await fetch(API_URL + '/users/' + user + '/reminders/', {
+    headers: {
+      authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(reminder),
   });
   if (res.status !== 200) throw new Error((await res.json()).error);
   return await res.json();
@@ -73,19 +96,24 @@ function Reminder(props: {
   }, []);
   return props.reminder.time > Date.now() ? (
     <div className={styles.reminder}>
-      <FaTimes
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        transition={{ type: 'spring', stiffness: 120 }}
         className={styles.x}
-        onClick={async () => {
-          mutate(
-            `reminders/${props.id}`,
-            async (reminders: Reminder[]) =>
-              reminders.filter((n) => n.id !== props.reminder.id),
-            false
-          );
-          await deleteReminder(props.id, props.user, props.reminder.id);
-          mutate(`reminders/${props.id}`);
-        }}
-      />
+      >
+        <FaTimes
+          onClick={async () => {
+            mutate(
+              `reminders/${props.id}`,
+              async (reminders: Reminder[]) =>
+                reminders.filter((n) => n.id !== props.reminder.id),
+              false
+            );
+            await deleteReminder(props.id, props.user, props.reminder.id);
+            mutate(`reminders/${props.id}`);
+          }}
+        />
+      </motion.div>
       <span>
         <span className={styles.reminderText}>
           <Linkify>{props.reminder.text}</Linkify>
@@ -105,6 +133,7 @@ export default function Reminders(props: {
 }): React.ReactElement {
   const router = useRouter();
   const id = router.query['id'];
+  const [modalIsOpen, setIsOpen] = React.useState(false);
   const { data: capInfo, error: capError } = useSWR(
     id ? `capabilities/${id}` : null,
     async () => await getCapabilityInfo(id as string),
@@ -120,6 +149,7 @@ export default function Reminders(props: {
     async () => await getUser(id as string, capInfo?.user || ''),
     { initialData: props.user }
   );
+  const { data: features } = useSWR('/features', getFeatures);
   const expired = capInfo ? !!capError : props.invalid;
   return expired ? (
     <div className={styles.background_expired}>
@@ -135,6 +165,13 @@ export default function Reminders(props: {
     </div>
   ) : capInfo ? (
     <div className={styles.background}>
+      {modalIsOpen && (
+        <ReminderModal
+          id={id as string}
+          closeModal={() => setIsOpen(false)}
+          user={user?.id}
+        />
+      )}
       <Head>
         <title>{'@' + (user ? user.username : 'User') + "'s Reminders"}</title>
         <meta content="ModBot" property="og:site_name" />
@@ -160,7 +197,21 @@ export default function Reminders(props: {
         />
       </Head>
       <div className={styles.wrapper}>
-        <div className={styles.header}>Reminders</div>
+        <div className={styles.headerWrapper}>
+          <div className={styles.header}>Reminders</div>
+          {features?.includes('addReminders') && (
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 120 }}
+              className={styles.plusWrapper}
+              onClick={(e) => {
+                setIsOpen(true);
+              }}
+            >
+              <FaPlus className={styles.plus} />
+            </motion.div>
+          )}
+        </div>
         <div className={styles.reminders}>
           <div className={styles.reminder}>
             <span className={classnames(styles.reminderText, styles.expiry)}>
@@ -193,6 +244,84 @@ export default function Reminders(props: {
     </div>
   ) : (
     <div></div>
+  );
+}
+function ReminderModal(props: {
+  closeModal: () => void;
+  id: string;
+  user?: string;
+}): React.ReactElement {
+  const [text, setText] = useState('');
+  const [time, setTime] = useState('');
+  return (
+    <motion.div
+      className={styles.modal}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) props.closeModal();
+      }}
+      animate={{ background: 'rgba(0, 0, 0, 0.4)' }}
+      initial={{ background: 'rgba(0, 0, 0, 0)' }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div
+        className={styles.createReminder}
+        animate={{ y: '0%' }}
+        initial={{ y: '-200%' }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className={styles.createHeaderWrapper}>
+          <div className={styles.createHeader}>Create a new reminder</div>
+          <div
+            className={styles.createFinishButton}
+            onClick={async () => {
+              props.closeModal();
+              await addReminder(props.id, props.user || '', { text, time });
+              mutate(`reminders/${props.id}`);
+            }}
+          >
+            Finish
+          </div>
+        </div>
+        <Field
+          label="Text"
+          text={text}
+          setText={setText}
+          placeholder="Do a task"
+        />{' '}
+        <Field
+          label="Time"
+          text={time}
+          setText={setTime}
+          placeholder="in 20 minutes"
+          validate={(s) => parse(s) !== null}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+function Field(props: {
+  label: string;
+  text: string;
+  placeholder: string;
+  validate?: (arg0: string) => boolean;
+  setText: (s: string) => unknown;
+}): React.ReactElement {
+  return (
+    <div className={styles.fieldWrapper}>
+      <div className={styles.fieldLabel}>{props.label}</div>
+      <input
+        type="text"
+        value={props.text}
+        onChange={(e) => props.setText(e.target.value)}
+        className={classnames(
+          styles.fieldInput,
+          props.text !== '' && props.validate && !props.validate(props.text)
+            ? [styles.fieldInvalid]
+            : []
+        )}
+        placeholder={props.placeholder}
+      />
+    </div>
   );
 }
 export async function getServerSideProps({

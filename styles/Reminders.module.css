@@ -66,6 +66,7 @@
   cursor: pointer;
   padding-right: 3px;
   flex-shrink: 0;
+  display: flex;
 }
 @media (max-width: 700px) {
   .x {
@@ -107,6 +108,9 @@
   --linkColor: #59aae4;
   --reminderBackground: #ffffff;
   --reminderShadow: rgba(0, 0, 0, 0.02);
+  --newItemButton: #9062cb;
+  --inputBackground: #fafafa;
+  --inputBorder: #c7c7c7;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -120,5 +124,111 @@
     --linkColor: #3886bd;
     --reminderBackground: #38383a;
     --reminderShadow: rgba(0, 0, 0, 0.02);
+    --newItemButton: #7247a9;
+    --inputBackground: #2f2f31;
+    --inputBorder: #3d3d42;
   }
+}
+.headerWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.plusWrapper {
+  background: var(--newItemButton);
+  border-radius: 73px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.plus {
+  font-size: 30px;
+  line-height: 34px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+}
+.modal {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.createReminder {
+  background: var(--background);
+  border-radius: 25px;
+  padding: 20px;
+  margin: 20px;
+}
+.createHeaderWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.createHeader {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 41px;
+  color: var(--text);
+}
+.createFinishButton {
+  background: var(--newItemButton);
+  border-radius: 15px;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 33px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+  padding: 10px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+.fieldLabel {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--text);
+}
+.fieldInput {
+  background-color: var(--inputBackground);
+  border: none;
+  border-radius: 7px;
+  font-size: 30px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+  width: 100%;
+  outline: none;
+  border: 2px solid rgba(0, 0, 0, 0);
+  padding-left: 8px;
+  color: var(--text);
+}
+.fieldInvalid,
+.fieldInvalid.fieldInput:focus {
+  border: 2px solid var(--expiry);
+}
+.fieldInput:focus {
+  border: 2px solid var(--inputBorder);
+}
+.fieldInput::placeholder {
+  opacity: 40%;
+}
+.fieldWrapper {
+  margin-right: 10px;
 }
