@@ -12,7 +12,7 @@ export interface User {
 }
 export async function getCapabilityInfo(token: string): Promise<Capability> {
   const res = await fetch(API_URL + '/capabilities/' + token);
-  if (res.status !== 200) throw new Error('Failed');
+  if (res.status !== 200) throw new Error(res.status.toString());
   return await res.json();
 }
 export async function getUser(token: string, user: string): Promise<User> {

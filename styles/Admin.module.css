@@ -1,0 +1,119 @@
+.background {
+  background: #f8f8f8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wrapper {
+  margin-top: 15vh;
+  background: #ffffff;
+  border-radius: 31px;
+  width: 40vw;
+  padding: 15px;
+}
+.headerWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.header {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 38px;
+  color: #333333;
+}
+.restart {
+  background: #e15858;
+  border-radius: 17px;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+  padding: 10px;
+  cursor: pointer;
+}
+.commitInfo {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 30px;
+  color: #3cbf31;
+}
+.commitMessage {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 30px;
+  color: #828282;
+}
+.badgeWrapper {
+  background: #f0f0f0;
+  border-radius: 83px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  margin: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  width: 100%;
+}
+.badgeLabel {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  color: #333333;
+}
+.badgeValue {
+  margin-left: 7px;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 30px;
+  color: #333333;
+}
+.badgesWrapper {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: -5px;
+}
+.expired_card {
+  background: var(--background);
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.03);
+  border-radius: 23px;
+  margin: 25px;
+}
+.expired_text {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 49px;
+  padding: 20px;
+  width: full;
+  text-align: center;
+  color: var(--expiry);
+}
+.background_expired {
+  --background: #f8f8f8;
+  --background-expired: #d2d2d2;
+  --expiry: #ca5f5f;
+  background: var(--background-expired);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
