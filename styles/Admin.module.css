@@ -46,6 +46,11 @@
   padding: 10px;
   cursor: pointer;
 }
+.commit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .commitInfo {
   font-family: Open Sans;
   font-style: normal;
@@ -53,6 +58,9 @@
   font-size: 22px;
   line-height: 30px;
   color: #3cbf31;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
 }
 .commitMessage {
   font-family: Open Sans;
@@ -61,6 +69,7 @@
   font-size: 22px;
   line-height: 30px;
   color: #828282;
+  padding-left: 6px;
 }
 .badgeWrapper {
   background: #f0f0f0;
