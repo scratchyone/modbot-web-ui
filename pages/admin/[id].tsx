@@ -75,6 +75,12 @@ export default function Admin(): React.ReactElement {
     </div>
   ) : capInfo ? (
     <div className={styles.background}>
+      <Head>
+        <title>Admin Page</title>
+        <meta property="og:site_name" content="ModBot" />
+        <meta property="og:title" content="Admin Page" />
+        <meta content={'ModBot admin panel'} property="og:description" />
+      </Head>
       <div className={styles.wrapper}>
         <div className={styles.headerWrapper}>
           <div className={styles.header}>ModBot v{adminInfo?.version}</div>
