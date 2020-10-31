@@ -112,7 +112,7 @@ function goodifyUptime(uptime: number): string {
     .replace(' minutes', 'm')
     .replace(' minute', 'm')
     .replace(' hours', 'h')
-    .replace(' hour', 'g')
+    .replace(' hour', 'h')
     .replace(' days', 'd')
     .replace(' day', 'd');
   return d;
