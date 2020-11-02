@@ -99,10 +99,10 @@ export default function Admin(): React.ReactElement {
 }
 function goodifyUptime(uptime: number): string {
   uptime = Date.now() / 1000 - uptime;
-  const seconds = Math.round(uptime) % 60;
-  const minutes = Math.round(uptime / 60) % 60;
-  const hours = Math.round(uptime / 3600) % 23;
-  const days = Math.round(uptime / 86400);
+  const seconds = Math.floor(uptime) % 60;
+  const minutes = Math.floor(uptime / 60) % 60;
+  const hours = Math.floor(uptime / 3600) % 23;
+  const days = Math.floor(uptime / 86400);
   const items = [];
   if (days) items.push(`${days}d`);
   if (hours) items.push(`${hours}h`);
