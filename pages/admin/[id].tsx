@@ -1,17 +1,9 @@
 import styles from '../../styles/Admin.module.css';
 import React, { useState, useEffect } from 'react';
-import { FaCodeBranch, FaPlus, FaTimes } from 'react-icons/fa';
+import { FaCodeBranch } from 'react-icons/fa';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import Linkify from 'react-linkify';
-import parse from 'parse-duration';
-import TextareaAutosize from 'react-textarea-autosize';
-import { API_URL, Capability, getCapabilityInfo } from '../../components/main';
-import {
-  formatDistanceToNow,
-  formatDistanceToNowStrict,
-  formatDuration,
-} from 'date-fns';
+import { API_URL, getCapabilityInfo } from '../../components/main';
 import useSWR, { mutate } from 'swr';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
@@ -107,21 +99,16 @@ export default function Admin(): React.ReactElement {
 }
 function goodifyUptime(uptime: number): string {
   uptime = Date.now() / 1000 - uptime;
-  const d = formatDuration({
-    seconds: Math.round(uptime) % 60,
-    minutes: Math.round(uptime / 60) % 60,
-    hours: Math.round(uptime / 3600) % 23,
-    days: Math.round(uptime / 86400),
-  })
-    .replace(' seconds', 's')
-    .replace(' second', 's')
-    .replace(' minutes', 'm')
-    .replace(' minute', 'm')
-    .replace(' hours', 'h')
-    .replace(' hour', 'h')
-    .replace(' days', 'd')
-    .replace(' day', 'd');
-  return d;
+  const seconds = Math.round(uptime) % 60;
+  const minutes = Math.round(uptime / 60) % 60;
+  const hours = Math.round(uptime / 3600) % 23;
+  const days = Math.round(uptime / 86400);
+  const items = [];
+  if (days) items.push(`${days}d`);
+  if (hours) items.push(`${hours}h`);
+  if (minutes) items.push(`${minutes}m`);
+  if (seconds) items.push(`${seconds}s`);
+  return items.join(' ');
 }
 function Badge(props: { label: string; value: string }): React.ReactElement {
   return (
