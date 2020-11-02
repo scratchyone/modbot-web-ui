@@ -105,9 +105,9 @@ function goodifyUptime(uptime: number): string {
   const days = Math.floor(uptime / 86400);
   const items = [];
   if (days) items.push(`${days}d`);
-  if (hours) items.push(`${hours}h`);
-  if (minutes) items.push(`${minutes}m`);
-  if (seconds) items.push(`${seconds}s`);
+  if (hours || days) items.push(`${hours}h`);
+  if (minutes || hours || days) items.push(`${minutes}m`);
+  items.push(`${seconds}s`);
   return items.join(' ');
 }
 function Badge(props: { label: string; value: string }): React.ReactElement {
