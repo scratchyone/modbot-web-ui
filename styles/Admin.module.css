@@ -1,5 +1,5 @@
 .background {
-  background: #f8f8f8;
+  background: var(--background);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@
 }
 .wrapper {
   margin-top: 15vh;
-  background: #ffffff;
+  background: var(--wrapperBackground);
   border-radius: 31px;
   width: 40vw;
   padding: 15px;
@@ -29,10 +29,10 @@
   font-style: normal;
   font-weight: bold;
   font-size: 38px;
-  color: #333333;
+  color: var(--text);
 }
 .restart {
-  background: #e15858;
+  background: var(--restartButton);
   border-radius: 17px;
   font-family: Open Sans;
   font-style: normal;
@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  color: #ffffff;
+  color: var(--restartText);
   padding: 10px;
   cursor: pointer;
 }
@@ -58,7 +58,7 @@
   font-weight: normal;
   font-size: 22px;
   line-height: 30px;
-  color: #3cbf31;
+  color: var(--commitHash);
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -70,13 +70,13 @@
   font-weight: normal;
   font-size: 22px;
   line-height: 30px;
-  color: #828282;
+  color: var(--commitMessage);
   padding-left: 6px;
   flex-wrap: wrap;
   word-wrap: break-word;
 }
 .badgeWrapper {
-  background: #f0f0f0;
+  background: var(--badgeWrapper);
   border-radius: 83px;
   text-align: center;
   display: inline-flex;
@@ -92,7 +92,7 @@
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
-  color: #333333;
+  color: var(--text);
 }
 .badgeValue {
   margin-left: 7px;
@@ -100,7 +100,7 @@
   font-style: normal;
   font-weight: 500;
   font-size: 30px;
-  color: #333333;
+  color: var(--text);
 }
 .badgesWrapper {
   margin-top: 7px;
@@ -112,7 +112,7 @@
 }
 .expired_card {
   background: var(--background);
-  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 2px 2px 12px var(--expiredShadow);
   border-radius: 23px;
   margin: 25px;
 }
@@ -128,13 +128,40 @@
   color: var(--expiry);
 }
 .background_expired {
-  --background: #f8f8f8;
-  --background-expired: #d2d2d2;
-  --expiry: #ca5f5f;
   background: var(--background-expired);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.background,
+.background_expired {
+  --expiry: #ca5f5f;
+  --background: #f8f8f8;
+  --background-expired: #d2d2d2;
+  --text: #333333;
+  --badgeWrapper: #f0f0f0;
+  --commitHash: #3cbf31;
+  --expiredShadow: rgba(0, 0, 0, 0.03);
+  --wrapperBackground: #ffffff;
+  --restartButton: #e15858;
+  --restartText: #ffffff;
+  --commitMessage: #828282;
+}
+@media (prefers-color-scheme: dark) {
+  .background,
+  .background_expired {
+    --expiry: #ca5f5f;
+    --background: #29292b;
+    --background-expired: #1e1e20;
+    --text: #f3f3f3;
+    --badgeWrapper: #434344;
+    --commitHash: #5dbf55;
+    --expiredShadow: rgba(0, 0, 0, 0.03);
+    --wrapperBackground: #38383a;
+    --restartButton: #b14848;
+    --restartText: #ffffff;
+    --commitMessage: #828282;
+  }
 }
