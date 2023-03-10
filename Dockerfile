@@ -8,5 +8,4 @@ COPY . .
 RUN chmod +x ./entrypoint.sh
 RUN NEXT_PUBLIC_ENTRYPOINT=/__ENTRYPOINT__ npm run build
 ENV NEXT_PUBLIC_ENTRYPOINT=""
-ENTRYPOINT ["./entrypoint.sh"]
-CMD ["npm run start -- --port $PORT"]
+CMD ./entrypoint.sh && npm run start -- --port $PORT
