@@ -5,5 +5,7 @@ COPY package-lock.json .
 RUN npm install --force
 
 COPY . .
-RUN npm run build
+RUN chmod +x ./entrypoint.sh
+RUN NEXT_PUBLIC_ENTRYPOINT=/__ENTRYPOINT__ npm run build
+ENV NEXT_PUBLIC_ENTRYPOINT=""
 CMD npm run start -- --port $PORT

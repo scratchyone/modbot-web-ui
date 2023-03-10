@@ -1,4 +1,5 @@
-const assetPrefix = process.env.assetPrefix;
 module.exports = {
-  basePath: assetPrefix,
+  basePath: process.env.NEXT_PUBLIC_ENTRYPOINT
+    ? process.env.NEXT_PUBLIC_ENTRYPOINT
+    : undefined,
 };
